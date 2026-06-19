@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solara</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0A0A0F;
+      --deep:    #1A1A2E;
+      --panel:   #12121C;
+      --gold:    #C8A951;
+      --gold2:   #E8C96A;
+      --text:    #E8E8E8;
+      --muted:   #888899;
+      --border:  rgba(200,169,81,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 60%, rgba(200,169,81,0.07) 0%, transparent 70%),
+        linear-gradient(180deg, #0A0A0F 0%, #1A1A2E 50%, #0A0A0F 100%);
+    }
+
+    /* Screenshot als hero-afbeelding */
+    .hero-screenshot {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 900px;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(200,169,81,0.15), 0 0 120px rgba(0,0,0,0.8);
+    }
+    .hero-screenshot img {
+      width: 100%; display: block;
+      object-fit: cover;
+    }
+    /* Placeholder als je nog geen screenshot hebt */
+    .screenshot-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--panel);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.75rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .screenshot-placeholder .icon { font-size: 3rem; opacity: 0.3; }
+
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-shadow: 0 0 40px rgba(200,169,81,0.3);
+      margin-bottom: 1.5rem;
+    }
+    .hero-description {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+      font-weight: 300;
+    }
+    .hero-cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--black);
+      border: 1px solid var(--gold);
+    }
+    .btn-primary:hover { background: var(--gold2); border-color: var(--gold2); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--gold); background: rgba(200,169,81,0.07); }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 5%; }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+    .divider {
+      width: 60px; height: 2px;
+      background: var(--gold);
+      margin-bottom: 2.5rem;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ── SCREENSHOTS SECTIE ── */
+    #screenshots { background: var(--panel); }
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .screenshot-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .screenshot-card:hover { border-color: rgba(200,169,81,0.5); transform: translateY(-3px); }
+    .screenshot-card img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+    .screenshot-card .card-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--deep);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.85rem;
+      gap: 0.5rem;
+    }
+
+    /* ── VIDEO SECTIE ── */
+    #trailer { background: var(--black); }
+    .video-wrapper {
+      margin-top: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .video-wrapper video,
+    .video-wrapper iframe {
+      width: 100%; aspect-ratio: 16/9;
+      display: block;
+      border: none;
+    }
+    /* Placeholder als je nog geen video hebt */
+    .video-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--panel);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      color: var(--muted);
+    }
+    .play-icon {
+      width: 72px; height: 72px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      color: var(--gold);
+      opacity: 0.7;
+    }
+
+    /* ── CODE SECTIE ── */
+    #code { background: var(--panel); }
+    .code-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    @media (max-width: 768px) { .code-layout { grid-template-columns: 1fr; } }
+    .code-description p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    pre {
+      background: #0D0D14;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+    code { font-family: 'Courier New', monospace; color: #A8DADC; }
+    .kw { color: #C8A951; }
+    .cm { color: #556; font-style: italic; }
+    .st { color: #90BE6D; }
+    .fn { color: #A8DADC; }
+    .dev-screenshot {
+      margin-top: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .dev-screenshot img { width: 100%; display: block; }
+    .dev-placeholder {
+      width: 100%; aspect-ratio: 4/3;
+      background: var(--deep);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.85rem;
+    }
+    .tag-list { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+    .tag {
+      background: rgba(200,169,81,0.1);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      padding: 0.3rem 0.75rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      border-radius: 2px;
+    }
+
+    /* ── DOWNLOAD SECTIE ── */
+    #download { background: var(--black); text-align: center; }
+    .download-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 3.5rem 4rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--panel);
+      margin-top: 2rem;
+    }
+    .download-icon { font-size: 3rem; }
+    .download-card p { color: var(--muted); max-width: 340px; font-size: 0.9rem; }
+    .download-buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    footer p { color: var(--muted); font-size: 0.8rem; }
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+    }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      display: none;
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.92);
+      align-items: center; justify-content: center;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 90vw; max-height: 85vh; border: 1px solid var(--border); border-radius: 2px; }
+    #lightbox-close {
+      position: fixed; top: 1.5rem; right: 2rem;
+      background: none; border: none; color: var(--muted);
+      font-size: 2rem; cursor: pointer; line-height: 1;
+      transition: color 0.2s;
+    }
+    #lightbox-close:hover { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button id="lightbox-close" aria-label="Sluiten">&#x2715;</button>
+  <img id="lightbox-img" src="" alt="Screenshot vergroting"/>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Solara</a>
+  <ul class="nav-links">
+    <li><a href="#screenshots">Screenshots</a></li>
+    <li><a href="#trailer">Trailer</a></li>
+    <li><a href="#code">Code</a></li>
+    <li><a href="#download">Download</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- ✏️ Vervang door jouw eigen screenshot -->
+  <div class="hero-screenshot">
+  
+  
+    <img src="hero.png" alt="Overzicht van de game wereld" />
+ 
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Unity · 2D · Schoolproject 2026</p>
+    <!-- ✏️ Verander de naam van je game -->
+    <h1>Solara</h1>
+    <!-- ✏️ Schrijf een korte, pakkende beschrijving van je game -->
+    <p class="hero-description">
+      Een 2D action-game waarin je als held een reeks vijanden verslaat met dynamische aanvals­mechanismen. Gebouwd met herbruikbare component­architectuur en polymorfisme in Unity.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#download" class="btn btn-primary">&#11015; Download game</a>
+      <a href="#trailer" class="btn btn-outline">&#9654; Bekijk trailer</a>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section id="screenshots">
+  <div class="container">
+    <p class="section-label">Visueel</p>
+    <h2>In-game screenshots</h2>
+    <div class="divider"></div>
+
+    <!-- ✏️ Beschrijving van de indrukwekkende content in je game -->
+    <p style="color:var(--muted); max-width:620px; margin-bottom:2.5rem;">
+      Stap in een open-world RPG waar interactieve NPC’s je nieuwe vaardigheden leren en je voorbereiden op gevechten tegen diverse vijanden met unieke aanvallen en steeds grotere uitdagingen.
+    </p>
+
+    <div class="screenshots-grid">
+      <div class="screenshot-card" onclick="openLightbox(this)">
+      
+    
+        <img src="image1.png" alt="Gevecht met enemy" />
+        
+      </div>
+
+  
+      <div class="screenshot-card" onclick="openLightbox(this)">
+    
+
+        <img src="image2.png" alt="Level overzicht" />
+
+      </div>
+
+    
+      <div class="screenshot-card" onclick="openLightbox(this)">
+       
+       
+        <img src="image3.png" alt="Enemy detail" />
+       
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TRAILER -->
+<section id="trailer">
+  <div class="container">
+    <p class="section-label">Gameplay</p>
+    <h2>Gameplay</h2>
+    <div class="divider"></div>
+    <p style="color:var(--muted); max-width:560px; margin-bottom:2rem;">
+      
+    </p>
+
+    <div class="video-wrapper">
+
+   
+ 
+      <video controls poster="screenshots/trailer-poster.png">
+        <source src="gameplay.mp4" type="video/mp4">
+        Je browser ondersteunt geen video.
+      </video>
+
+
+    </div>
+  </div>
+</section>
+
+<!-- CODE -->
+<section id="code">
+  <div class="container">
+    <p class="section-label">Techniek</p>
+    <h2>Code & ontwikkeling</h2>
+    <div class="divider"></div>
+
+  <div class="code-layout">
+  <div class="code-description">
+    <p>
+      Het hart van het enemy-systeem is een state-driven controller die verantwoordelijk is voor detectie, aanval-timing en gedragsovergangen.
+      De <strong>EnemyController</strong> beheert attack-cooldowns, telegraphing via indicators en state switching tussen <code>Chase</code> en <code>Attack</code>.
+    </p>
+    <p>
+      Dankzij coroutines wordt het volledige aanvalspatroon (wind-up → indicator → execute → reset) strak gesynchroniseerd zonder complexe state machines.
+      Dit maakt het systeem zowel uitbreidbaar als makkelijk te balancen via ScriptableObjects.
+    </p>
+
+    <div class="tag-list">
+      <span class="tag">C#</span>
+      <span class="tag">Unity 2D</span>
+      <span class="tag">Coroutines</span>
+      <span class="tag">State Machine</span>
+      <span class="tag">Component-architectuur</span>
+    </div>
+
+  
+  </div>
+
+  <pre><code><span class="kw">using</span> System;
+
+
+<span class="kw">public class</span> <span class="fn">EnemyController</span> : MonoBehaviour
+{
+    <span class="kw">public</span> Rigidbody2D rb { <span class="kw">get; private set;</span> }
+    <span class="kw">public</span> EnemyMovement enemyMovement { <span class="kw">get; private set;</span> }
+    <span class="kw">public</span> GameObject player { <span class="kw">get; private set;</span> }
+    <span class="kw">public</span> EnemyState enemyState { <span class="kw">get; private set;</span> }
+    <span class="kw">public</span> PlayerDetector playerDetector { <span class="kw">get; private set;</span> }
+    <span class="kw">public</span> BaseEnemyStats BaseEnemyStats => baseEnemyStats;
+    <span class="kw">public</span> Vector2 targetPositionLock { <span class="kw">get; private set;</span> }
+
+    [SerializeField] <span class="kw">private</span> BaseEnemyStats baseEnemyStats;
+
+    <span class="kw">private</span> EnemyHealthComponent enemyHealthComponent;
+    <span class="kw">private</span> AttackIndicator attackIndicator;
+    <span class="kw">private</span> IAttack iAttack;
+
+    <span class="kw">private bool</span> isAttacking = <span class="kw">false</span>;
+    <span class="kw">private float</span> lastAttackTime;
+
+    <span class="kw">private void</span> Awake()
+    {
+        enemyMovement = GetComponent&lt;EnemyMovement&gt;();
+        enemyHealthComponent = GetComponent&lt;EnemyHealthComponent&gt;();
+        enemyHealthComponent.Initialize(baseEnemyStats.HP);
+
+        rb = GetComponent&lt;Rigidbody2D&gt;();
+        playerDetector = GetComponent&lt;PlayerDetector&gt;();
+        iAttack = GetComponent&lt;IAttack&gt;();
+        attackIndicator = GetComponent&lt;AttackIndicator&gt;();
+    }
+
+    <span class="kw">public void</span> CheckPlayerInAttackRange()
+    {
+        <span class="kw">if</span> (isAttacking) <span class="kw">return</span>;
+        <span class="kw">if</span> (player == <span class="kw">null</span>) <span class="kw">return</span>;
+
+        <span class="kw">float</span> distance = Vector2.Distance(transform.position, player.transform.position);
+
+        <span class="kw">if</span> (distance &lt;= baseEnemyStats.AtkRange)
+        {
+            StartCoroutine(AttackRoutine());
+        }
+    }
+
+    <span class="kw">private IEnumerator</span> AttackRoutine()
+    {
+        <span class="kw">if</span> (Time.time &lt; lastAttackTime + BaseEnemyStats.AtkCooldown)
+            <span class="kw">yield break</span>;
+
+        lastAttackTime = Time.time;
+        isAttacking = <span class="kw">true</span>;
+        enemyState = EnemyState.Attack;
+
+        targetPositionLock = player.transform.position;
+
+        <span class="kw">if</span> (attackIndicator != <span class="kw">null</span>)
+            attackIndicator.DrawAttackIndicator();
+
+        yield <span class="kw">return new</span> WaitForSeconds(baseEnemyStats.WindUpTime);
+
+        <span class="kw">if</span> (attackIndicator != <span class="kw">null</span>)
+            attackIndicator.HideIndicator();
+
+        yield <span class="kw">return</span> iAttack.Attack();
+
+        isAttacking = <span class="kw">false</span>;
+        enemyState = EnemyState.Chase;
+    }
+
+    <span class="kw">private void</span> HandleDeath()
+    {
+        QuestManager.Instance.OnEnemyKilled(baseEnemyStats.GetEnemyType);
+        Destroy(gameObject);
+    }
+
+    <span class="kw">public enum</span> EnemyState
+    {
+        Chase,
+        Attack,
+    }
+}</code></pre>
+</div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <div class="container">
+    <p class="section-label">Spelen</p>
+    <h2>Download</h2>
+    <div class="divider" style="margin: 0 auto 0;"></div>
+
+    <div class="download-card">
+      <div class="download-icon">🕹️</div>
+      <p>Download hier om het spel te spelen!</p>
+      <div class="download-buttons">
+
+        <!-- ✏️ Vervang # door de echte download-link naar jouw .exe of itch.io pagina -->
+        <a href="#" class="btn btn-primary">
+          &#11015; Download .exe (Windows)
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">SOLARA</span>
+  <p>Gemaakt door Dennis Yang &mdash; Schoolproject &copy; 2026</p>
+</footer>
+
+<script>
+  // Lightbox voor screenshots
+  function openLightbox(card) {
+    const img = card.querySelector('img');
+    if (!img) return; // geen afbeelding aanwezig, doe niets
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox-img').alt = img.alt;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll-spy voor nav
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.style.color = '');
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.style.color = 'var(--gold)';
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
